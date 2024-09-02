@@ -1,3 +1,22 @@
+"""
+https://github.com/ZhengyuZhao/Targeted-Transfer/blob/main/eval_single.py
+"""
+## define Po+Trip
+def Poincare_dis(a, b):
+    L2_a = torch.sum(torch.square(a), 1)
+    L2_b = torch.sum(torch.square(b), 1)
+
+    theta = 2 * torch.sum(torch.square(a - b), 1) / ((1 - L2_a) * (1 - L2_b))
+    distance = torch.mean(torch.acosh(1.0 + theta))
+    return distance
+
+def Cos_dis(a, b):
+    a_b = torch.abs(torch.sum(torch.multiply(a, b), 1))
+    L2_a = torch.sum(torch.square(a), 1)
+    L2_b = torch.sum(torch.square(b), 1)
+    distance = torch.mean(a_b / torch.sqrt(L2_a * L2_b))
+    return distance
+
 # AOS+CE
 def AOS_CE(out_logits, origlabs, tarlabs, weight):
     t = weight
